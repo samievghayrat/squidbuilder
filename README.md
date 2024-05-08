@@ -1,1 +1,1 @@
-# squidbuilder
+# squadbuilder
