@@ -13,11 +13,12 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Document(collection = "users")
-public class User {
+@Document(collection = "rooms")
+public class Room {
     @Id
     private ObjectId id;
-    private String username;
-    private String password;
-    private List<ObjectId> rooms;
+    private String event;
+    private String acitvity;
+    private List<User> users;
+    private List<Responsibility> responsibilities;
 }
