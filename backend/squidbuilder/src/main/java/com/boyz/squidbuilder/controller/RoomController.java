@@ -16,14 +16,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.HttpClientErrorException.BadRequest;
 
 import com.boyz.squidbuilder.entity.Room;
-import com.boyz.squidbuilder.entity.User;
 import com.boyz.squidbuilder.service.RoomService;
-import com.boyz.squidbuilder.service.UserService;
 
-import jakarta.websocket.server.PathParam;
 
 @RestController
 @RequestMapping("/rooms")
@@ -31,8 +27,6 @@ public class RoomController {
     @Autowired
     private RoomService roomService;
 
-    @Autowired
-    private UserService userService;
 
     @GetMapping("/get/{id}")
     public ResponseEntity<?> getRoom(@PathVariable ObjectId id){
@@ -46,13 +40,10 @@ public class RoomController {
 
     @PostMapping("/create/{username}")
     public ResponseEntity<?> createRoom(@RequestBody Room room, @PathVariable String username){
-        List<User> users = new ArrayList<>();
-        users.add(userService.getByUsername(username).orElse(null));
-        room.setUsers(users);
-        if(roomService.createRoom(room)){
-            return ResponseEntity.ok("Created Successfuly");
+        if(roomService.createRoom(room, username)){
+            return ResponseEntity.status(HttpStatus.CREATED).body("Successfuly created");
         } else {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Something went wrong");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Something is wrong");
         }
     }
 

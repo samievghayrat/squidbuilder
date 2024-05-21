@@ -1,5 +1,6 @@
 package com.boyz.squidbuilder.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,6 +25,9 @@ public class RoomService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private UserService userService;
+
     public Optional<Room> getRoom(ObjectId id){
         return roomRepository.findById(id);
     }
@@ -32,7 +36,18 @@ public class RoomService {
         return roomRepository.findById(id).isPresent();
     }
 
-    public boolean createRoom(Room room){
+    public boolean createRoom(Room room, String username){
+        List<User> users = new ArrayList<>();
+        User user = userService.getByUsername(username).orElseThrow(() -> new RuntimeException("No user with that username"));
+        users.add(user);
+        List<ObjectId> rooms = user.getRooms();
+        if(rooms == null){
+            rooms = new ArrayList<>();
+        }
+        rooms.add(room.getId());
+        user.setRooms(rooms);
+        room.setUsers(users);
+        userRepository.save(user);
         roomRepository.save(room);
         return true;
     }
