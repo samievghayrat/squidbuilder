@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import LoginForm from './components/LoginForm';
 import RegisterForm from './components/RegisterForm';
 import './index';
@@ -35,9 +35,12 @@ const App = () => {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={ 
+        <Route path='/room' element={ !isLoggedIn ? <Navigate to="/" /> :
+          <button className="header logout-button" onClick={handleLogout}>Logout</button>
+        }/>
+        <Route path="/" element={ isLoggedIn ? <Navigate to="/room" /> :
             <div className="App">
-            <h1>Welcome Bratishka!!</h1>
+            <h1>Welcome to SquidBuilder</h1>
             {isLogin ? (
               <LoginForm onLogin={handleLogin} />
             ) : (
