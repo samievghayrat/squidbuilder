@@ -2,26 +2,30 @@ import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import LoginForm from './components/LoginForm';
 import RegisterForm from './components/RegisterForm';
+import Room from './components/Room';
 import './index';
 
 
 const App = () => {
   const [isLogin, setIsLogin] = useState(true);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [username, setUsername] = useState('');
 
   useEffect(() => {
     const loggedInStatus = localStorage.getItem('isLoggedIn') === 'true';
     setIsLoggedIn(loggedInStatus);
   }, []);
 
-  const handleLogin = (data) => {
-    console.log("Login data:", data);
+  const handleLogin = (username) => {
+    console.log("Login data:", username);
+    setUsername(username);
     setIsLoggedIn(true);
     localStorage.setItem('isLoggedIn', 'true');
   };
 
-  const handleRegister = (data) => {
-    console.log("Register data:", data);
+  const handleRegister = (username) => {
+    console.log("Register data:", username);
+    setUsername(username);
     setIsLoggedIn(true);
     localStorage.setItem('isLoggedIn', 'true');
   };
@@ -36,7 +40,7 @@ const App = () => {
     <Router>
       <Routes>
         <Route path='/room' element={ !isLoggedIn ? <Navigate to="/" /> :
-          <button className="header logout-button" onClick={handleLogout}>Logout</button>
+          <Room onLogout={handleLogout} username={username}/>
         }/>
         <Route path="/" element={ isLoggedIn ? <Navigate to="/room" /> :
             <div className="App">

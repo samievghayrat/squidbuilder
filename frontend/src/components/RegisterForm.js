@@ -18,6 +18,9 @@ const RegisterForm = ({ onRegister }) => {
         console.log('Registration successful');
         onRegister(username);
       } catch (error) {
+        alert("Registration failed");
+        setUsername('');
+        setPassword('');
         console.error('Registration failed', error);
       }
   };

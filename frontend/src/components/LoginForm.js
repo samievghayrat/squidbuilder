@@ -15,7 +15,7 @@ const LoginForm = ({ onLogin }) => {
         await axios.post('/users/login', { username, password });
         onLogin(username);
       } catch (error) {
-        alert("Login failed")
+        alert("Login Failed");
         setPassword('');
         console.error('Login failed', error);
         return;
