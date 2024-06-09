@@ -3,6 +3,8 @@ import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-d
 import LoginForm from './components/LoginForm';
 import RegisterForm from './components/RegisterForm';
 import Room from './components/Room';
+import Activity from './components/Activity';  // Import Activity component
+
 import './index';
 
 
@@ -42,6 +44,8 @@ const App = () => {
         <Route path='/room' element={ !isLoggedIn ? <Navigate to="/" /> :
           <Room onLogout={handleLogout} username={username}/>
         }/>
+          <Route path='/activity' element={<Activity username={username} />} />  {/* New route */}
+
         <Route path="/" element={ isLoggedIn ? <Navigate to="/room" /> :
             <div className="App">
             <h1>Welcome to SquidBuilder</h1>
