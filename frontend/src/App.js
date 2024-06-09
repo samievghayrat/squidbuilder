@@ -45,6 +45,7 @@ const App = () => {
         <Route path="/" element={ isLoggedIn ? <Navigate to="/room" /> :
             <div className="App">
             <h1>Welcome to SquidBuilder</h1>
+            <h3>Let's do group activities together</h3>
             {isLogin ? (
               <LoginForm onLogin={handleLogin} />
             ) : (
