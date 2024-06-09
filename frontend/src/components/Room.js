@@ -39,6 +39,9 @@ const Room = ({ onLogout, username }) => {
                 username
             });
             setIsCreate(false);
+            // Clear the text fields
+            setRoomName('');
+            setRoomDescription('');
         } catch (error) {
             alert("Creating room failed");
             console.log(error);
