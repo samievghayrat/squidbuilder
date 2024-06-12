@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import axios from "../api/axiosConfig";
 import './sidebar.css';
 
-const MainRoom = ({ username }) => {
+const MainRoom = ({username, onLogout}) => {
 
     const [activities, setActivities] = useState([]);
     const [activitySelected, setActivitySelected] = useState(false);
@@ -180,9 +180,16 @@ const MainRoom = ({ username }) => {
         console.log(scores);
         return scores;
     }
-
+    const [isLogin, setIsLogin] = useState(true);
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const handleLogout = () => {
+        setIsLoggedIn(false);
+        localStorage.removeItem('isLoggedIn');
+      
+    };
     return (
         <div className="dashboard" >
+            <button style={{fontSize: '25px', width: 'auto', height:'auto'}} className="logout-button" onClick={onLogout}>Logout</button>
             <div className="sidebar" style={{
                 backgroundSize: 'auto',
                 backgroundPosition: 'center',

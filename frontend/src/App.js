@@ -47,7 +47,8 @@ const App = () => {
         }/>
           <Route path='/activity' element={<Activity username={username} />} />  {/* New route */}
           <Route path='/projects' element={<ProjectManagement />} />  {/* New route */}
-          <Route path='/room/:id' element={<MainRoom username={username}/>}></Route>
+          <Route path='/room/:id' element={!isLoggedIn ? <Navigate to="/" /> :
+            <MainRoom username={username} onLogout={handleLogout}/>}></Route>
 
         <Route path="/" element={ isLoggedIn ? <Navigate to="/room" /> :
             <div className="App">
