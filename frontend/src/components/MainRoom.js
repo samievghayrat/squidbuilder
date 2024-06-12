@@ -198,13 +198,27 @@ const MainRoom = ({username, onLogout}) => {
                 width: '250px'
             }}>
                 <button
-                    style={{ fontSize: '35px', paddingTop: '10px', backgroundColor: '#02590F', width: '290px', textAlign: 'center' }}
+                    style={{ fontSize: '25px', paddingTop: '10px', backgroundColor: '#02590F', width: '290px', textAlign: 'center' }}
                     onClick={() => { /* Add your event handler code here */ }}
                     className="activity-btn"
                 >
-                    Members
+                    Members 
                 </button>                            
-                <h2 style={{ fontSize: '35px', paddingTop: '10px', backgroundColor: '#02590F', width: '290px', textAlign: 'center' }}>Your Activities</h2>
+               
+                <button
+                    style={{ fontSize: '25px', paddingTop: '10px', backgroundColor: '#02590F', width: '290px', textAlign: 'center' }}
+                    onClick={() => { navigator.clipboard.writeText(roomId).then(() => {
+                        // Show a notification
+                        alert('Room id was copied to clipboard!');
+                    }).catch(err => {
+                        console.error('Failed to copy text: ', err);
+                    });
+                        /* Add your event handler code here */ }}
+                    className="activity-btn"
+                >
+                    <div>Copy room id</div> 
+                </button>  
+                <button style={{ fontSize: '25px', paddingTop: '10px', backgroundColor: '#02590F', width: '290px', textAlign: 'center' }} onClick={null}>Your Activities</button>
                 <button className="add-activity-btn" style={{ backgroundColor: 'transparent' }} onClick={handleCreateActivity}>+ Add Activity</button>
                 <ul>
                     {activities.map((activity, index) => (
@@ -294,8 +308,8 @@ const MainRoom = ({username, onLogout}) => {
                 {activitySelected && currentActivity && !editingActivity && (
                     <div className="activity-details">
                         <h3 style={{ fontSize: '28px' }}>{currentActivity.name}</h3>
-                        <p style={{ fontSize: '25px' }}>Date: {(new Date(currentActivity.date)).toDateString()}</p>
-                        <p style={{ fontSize: '25px' }}>Time: {(new Date(currentActivity.date)).toLocaleTimeString()}</p>
+                        <p style={{ fontSize: '21px' }}>Date: {(new Date(currentActivity.date)).toDateString()}</p>
+                        <p style={{ fontSize: '21px' }}>Time: {(new Date(currentActivity.date)).toLocaleTimeString()}</p>
                         <button style={{ fontSize: '20px' }} onClick={handleEditActivity}>Edit Activity</button>
                         <h4 style={{ fontSize: '28px' }}>Responsibilities:</h4>
                         <ul>
@@ -303,7 +317,7 @@ const MainRoom = ({username, onLogout}) => {
                                 <li  style={{fontSize: '20px'}} key={index}>{resp.responsibility} - Complexity: {resp.complexity} - Assigned to: {resp.username ?? "none"}</li>
                             ))}
                         </ul>
-                        <button type="submit" onClick={randomalgorithm}>Distribute responsibilities</button>
+                        <button style={{backgroundColor: 'green', fontSize: '25px'}}type="submit" onClick={randomalgorithm}>Distribute responsibilities</button>
                     </div>
                 )}
 

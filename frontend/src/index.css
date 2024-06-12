@@ -328,14 +328,8 @@ button:hover {
   margin-left: 100px;
 }
 
-<<<<<<< Updated upstream
-.sidebar h2 {
-  background-color: #066a2200; /* 20% transparency */
-  color: white;
-=======
 .dashboard .logout-button{
   position: absolute;
   right: 10px;
   top:10px;
->>>>>>> Stashed changes
 }
