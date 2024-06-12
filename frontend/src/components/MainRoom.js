@@ -132,6 +132,16 @@ const MainRoom = ({username}) => {
         setCurrentActivity(null);
     };
 
+    const randomalgorithm = () => {
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+    }
+
     return (
         <div className="dashboard" >
             <div className="sidebar" style={{
@@ -240,6 +250,7 @@ const MainRoom = ({username}) => {
                                 <li  style={{fontSize: '20px'}} key={index}>{resp.responsibility} - Complexity: {resp.complexity}</li>
                             ))}
                         </ul>
+                        <button type="submit" onClick={randomalgorithm}>Distribute responsibilities</button>
                     </div>
                 )}
 
