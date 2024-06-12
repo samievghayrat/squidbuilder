@@ -4,7 +4,6 @@ import axios from "../api/axiosConfig";
 import './sidebar.css';
 
 const MainRoom = ({username, onLogout}) => {
-
     const [activities, setActivities] = useState([]);
     const [activitySelected, setActivitySelected] = useState(false);
     const [creatingActivity, setCreatingActivity] = useState(false);
@@ -17,6 +16,7 @@ const MainRoom = ({username, onLogout}) => {
     const [activityDate, setActivityDate] = useState('');
     const [activityTime, setActivityTime] = useState('');
     const [members, setMembers] = useState([]);
+    const [showMembers, setShowMembers] = useState(false); // New state variable to manage members visibility
 
     const { id: roomId } = useParams();
 
@@ -32,9 +32,9 @@ const MainRoom = ({username, onLogout}) => {
             setMembers(room.members ?? []);
           })
           .catch(error => {
-            console.error('There was an error fetching the movies!', error);
+            console.error('There was an error fetching the room data!', error);
           });
-      }, []);
+    }, []);
 
     const handleCreateActivity = () => {
         setCreatingActivity(true);
@@ -70,7 +70,6 @@ const MainRoom = ({username, onLogout}) => {
         const dateTimeStr = `${activityDate}T${activityTime}`;
         const newDate = new Date(dateTimeStr);
         const date = newDate.getTime();
-        console.log(activities.length)
         const newActivity = {
             key: activities.length,
             name: selectedActivity,
@@ -88,8 +87,6 @@ const MainRoom = ({username, onLogout}) => {
         setCreatingActivity(false);
         setNewResponsibilities([]);
         setSelectedActivity('');
-        // setActivityDate('');
-        // setActivityTime('');
     };
 
     const handleEditActivity = () => {
@@ -108,11 +105,6 @@ const MainRoom = ({username, onLogout}) => {
     };
 
     const handleSaveEditedActivity = async () => {
-        console.log("current activ: ", currentActivity)
-        // const activityTime1 = activityTime ?? 0;
-        // const dateTimeStr = `${activityDate1}T${activityTime1}`;
-        // const newDate = new Date(dateTimeStr);
-        // const date = newDate.getTime();
         setActivities(
             activities.map(activity =>
                 activity.key === currentActivity.key
@@ -120,10 +112,10 @@ const MainRoom = ({username, onLogout}) => {
                     : activity
             )
         );
-        const sometActivity = { ...currentActivity, responsibilities: newResponsibilities };
-        console.log(sometActivity);
+        const updatedActivity = { ...currentActivity, responsibilities: newResponsibilities };
+        console.log(updatedActivity);
         try {
-            await axios.put(`rooms/change/activity/${roomId}?key=${currentActivity.key}`, sometActivity);
+            await axios.put(`rooms/change/activity/${roomId}?key=${currentActivity.key}`, updatedActivity);
             console.log("was changed successfully");
         } catch (error) {
             console.log("something went wrong when changing activity", error);
@@ -141,21 +133,19 @@ const MainRoom = ({username, onLogout}) => {
     }
 
     const randomalgorithm = async () => {
-
         const responsibilities = currentActivity.responsibilities;
         responsibilities.sort((a, b) => a.complexity - b.complexity);
-    
-        let scores = members.map(member => ({ name: member, score: 0, responsibilities: [] }));
-    
-        shuffleArray(scores);
-    
-        for (let i = 0; i < responsibilities.length; i++) {
 
+        let scores = members.map(member => ({ name: member, score: 0, responsibilities: [] }));
+
+        shuffleArray(scores);
+
+        for (let i = 0; i < responsibilities.length; i++) {
             let memberIndex = i % scores.length;
             scores[memberIndex].score += responsibilities[i].complexity;
             scores[memberIndex].responsibilities.push(responsibilities[i].title);
-            responsibilities[i].username = members[memberIndex];
-    
+            responsibilities[i].username = members[memberIndex].name;
+
             if ((i + 1) % scores.length === 0) {
                 scores.sort((a, b) => a.score - b.score);
             }
@@ -164,16 +154,16 @@ const MainRoom = ({username, onLogout}) => {
         setActivities(
             activities.map(activity =>
                 activity.key === currentActivity.key
-                    ? { ...activity, responsibilities: responsibilities}
+                    ? { ...activity, responsibilities: responsibilities }
                     : activity
             )
         )
-        const sometActivity = { ...currentActivity, responsibilities: responsibilities};
-        console.log(sometActivity);
+        const updatedActivity = { ...currentActivity, responsibilities: responsibilities };
+        console.log(updatedActivity);
         try {
-            await axios.put(`rooms/change/activity/${roomId}?key=${currentActivity.key}`, sometActivity);
+            await axios.put(`rooms/change/activity/${roomId}?key=${currentActivity.key}`, updatedActivity);
             console.log("was changed successfully");
-        } catch(error){
+        } catch (error) {
             console.log("something went wrong when changing activity", error);
         }
 
@@ -185,11 +175,11 @@ const MainRoom = ({username, onLogout}) => {
     const handleLogout = () => {
         setIsLoggedIn(false);
         localStorage.removeItem('isLoggedIn');
-      
     };
+
     return (
-        <div className="dashboard" >
-            <button style={{fontSize: '25px', width: 'auto', height:'auto'}} className="logout-button" onClick={onLogout}>Logout</button>
+        <div className="dashboard">
+            <button style={{ fontSize: '25px', width: 'auto', height: 'auto' }} className="logout-button" onClick={onLogout}>Logout</button>
             <div className="sidebar" style={{
                 backgroundSize: 'auto',
                 backgroundPosition: 'center',
@@ -199,25 +189,24 @@ const MainRoom = ({username, onLogout}) => {
             }}>
                 <button
                     style={{ fontSize: '25px', paddingTop: '10px', backgroundColor: '#02590F', width: '290px', textAlign: 'center' }}
-                    onClick={() => { /* Add your event handler code here */ }}
+                    onClick={() => setShowMembers(!showMembers)} // Toggle members visibility
                     className="activity-btn"
                 >
-                    Members 
+                    Members
                 </button>                            
-               
                 <button
                     style={{ fontSize: '25px', paddingTop: '10px', backgroundColor: '#02590F', width: '290px', textAlign: 'center' }}
-                    onClick={() => { navigator.clipboard.writeText(roomId).then(() => {
-                        // Show a notification
-                        alert('Room id was copied to clipboard!');
-                    }).catch(err => {
-                        console.error('Failed to copy text: ', err);
-                    });
-                        /* Add your event handler code here */ }}
+                    onClick={() => {
+                        navigator.clipboard.writeText(roomId).then(() => {
+                            alert('Room id was copied to clipboard!');
+                        }).catch(err => {
+                            console.error('Failed to copy text: ', err);
+                        });
+                    }}
                     className="activity-btn"
                 >
-                    <div>Copy room id</div> 
-                </button>  
+                    <div>Copy room id</div>
+                </button>
                 <button style={{ fontSize: '25px', paddingTop: '10px', backgroundColor: '#02590F', width: '290px', textAlign: 'center' }} onClick={null}>Your Activities</button>
                 <button className="add-activity-btn" style={{ backgroundColor: 'transparent' }} onClick={handleCreateActivity}>+ Add Activity</button>
                 <ul>
@@ -230,8 +219,19 @@ const MainRoom = ({username, onLogout}) => {
                     ))}
                 </ul>
             </div>
-            <div className="main-content" >
-                {!activitySelected && !creatingActivity && !editingActivity && (
+            <div className="main-content">
+                {showMembers && (
+                    <div className="members-list">
+                        <h3 style={{ fontSize: '28px' }}>Members</h3>
+                        <ul>
+                            {members.map((member, index) => (
+                                <li key={index} style={{ fontSize: '21px' }}>{member}</li>
+                            ))}
+                        </ul>
+                    </div>
+                )}
+
+                {!activitySelected && !creatingActivity && !editingActivity && !showMembers && (
                     <div className="no-activity-selected">
                         <h3 style={{ fontSize: '28px' }}>No Activity Selected</h3>
                         <p style={{ fontSize: '23px' }}>Select an activity or get started with a new one</p>
@@ -240,10 +240,9 @@ const MainRoom = ({username, onLogout}) => {
                 )}
 
                 {creatingActivity && (
-                    <div className="create-activity" >
+                    <div className="create-activity">
                         <h3 style={{ fontSize: '40px', color: 'green' }}>Create New Activity</h3>
                         <label>
-
                             <select value={selectedActivity} onChange={handleSelectActivity}>
                                 <option value="" disabled>Select an activity</option>
                                 {activityOptions.map((activity) => (
@@ -257,24 +256,20 @@ const MainRoom = ({username, onLogout}) => {
                                 value={activityDate}
                                 onChange={(e) => setActivityDate(e.target.value)}
                             />
-
                             <input
                                 type="time"
                                 value={activityTime}
-                                onChange={(e) => setActivityTime(e.target.value)
-
-                                }
-
+                                onChange={(e) => setActivityTime(e.target.value)}
                             />
                         </label>
                         {selectedActivity && (
                             <>
-                                <h4 style={{ fontSize: '20px', textAlign: 'center', paddingTop: '10px', }}>Add Responsibilities</h4>
+                                <h4 style={{ fontSize: '20px', textAlign: 'center', paddingTop: '10px' }}>Add Responsibilities</h4>
                                 <input
                                     type="text"
                                     value={newResponsibilityText}
                                     onChange={(e) => setNewResponsibilityText(e.target.value)}
-                                    placeholder="write a responsibility"
+                                    placeholder="Write a responsibility"
                                 />
                                 <select
                                     value={newResponsibilityComplexity}
@@ -287,17 +282,16 @@ const MainRoom = ({username, onLogout}) => {
                                 </select>
                                 <button style={{ backgroundColor: 'black' }} onClick={handleAddResponsibility}>Add Responsibility</button>
                                 {newResponsibilities.length > 0 && (
-
-                                <div className='responsibility  '>
-                                    <ul>
-                                        {newResponsibilities.map((resp, index) => (
-                                            <li key={index}>
-                                                {resp.responsibility} - Complexity: {resp.complexity} - Assigned to: {resp.username ?? "none"}
-                                                <button onClick={() => handleDeleteResponsibility(index)}>Delete</button>
-                                            </li>
-                                        ))}
-                                    </ul>
-                                </div>
+                                    <div className='responsibility'>
+                                        <ul>
+                                            {newResponsibilities.map((resp, index) => (
+                                                <li key={index}>
+                                                    {resp.responsibility} - Complexity: {resp.complexity} - Assigned to: {resp.username ?? "none"}
+                                                    <button onClick={() => handleDeleteResponsibility(index)}>Delete</button>
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    </div>
                                 )}
                                 <button style={{ fontSize: '35px' }} onClick={handleSaveActivity}>Save Activity</button>
                             </>
@@ -305,7 +299,7 @@ const MainRoom = ({username, onLogout}) => {
                     </div>
                 )}
 
-                {activitySelected && currentActivity && !editingActivity && (
+                {activitySelected && currentActivity && !editingActivity && !showMembers && (
                     <div className="activity-details">
                         <h3 style={{ fontSize: '28px' }}>{currentActivity.name}</h3>
                         <p style={{ fontSize: '21px' }}>Date: {(new Date(currentActivity.date)).toDateString()}</p>
@@ -314,10 +308,10 @@ const MainRoom = ({username, onLogout}) => {
                         <h4 style={{ fontSize: '28px' }}>Responsibilities:</h4>
                         <ul>
                             {currentActivity.responsibilities.map((resp, index) => (
-                                <li  style={{fontSize: '20px'}} key={index}>{resp.responsibility} - Complexity: {resp.complexity} - Assigned to: {resp.username ?? "none"}</li>
+                                <li style={{ fontSize: '20px' }} key={index}>{resp.responsibility} - Complexity: {resp.complexity} - Assigned to: {resp.username ?? "none"}</li>
                             ))}
                         </ul>
-                        <button style={{backgroundColor: 'green', fontSize: '25px'}}type="submit" onClick={randomalgorithm}>Distribute responsibilities</button>
+                        <button style={{ backgroundColor: 'green', fontSize: '25px' }} type="submit" onClick={randomalgorithm}>Distribute responsibilities</button>
                     </div>
                 )}
 
@@ -342,16 +336,16 @@ const MainRoom = ({username, onLogout}) => {
                         </select>
                         <button onClick={handleAddResponsibility}>Add Responsibility</button>
                         {newResponsibilities.length > 0 && (
-                        <div className='responsibility  '>
-                            <ul>
-                                {newResponsibilities.map((resp, index) => (
-                                    <li key={index}>
-                                        {resp.responsibility} - Complexity: {resp.complexity} - Assigned to: {resp.username ?? "none"}
-                                        <button onClick={() => handleDeleteResponsibility(index)}>Delete</button>
-                                    </li>
-                                ))}
-                            </ul>
-                        </div>
+                            <div className='responsibility'>
+                                <ul>
+                                    {newResponsibilities.map((resp, index) => (
+                                        <li key={index}>
+                                            {resp.responsibility} - Complexity: {resp.complexity} - Assigned to: {resp.username ?? "none"}
+                                            <button onClick={() => handleDeleteResponsibility(index)}>Delete</button>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
                         )}
                         <button style={{ fontSize: '30px' }} onClick={handleSaveEditedActivity}>Save Changes</button>
                     </div>
