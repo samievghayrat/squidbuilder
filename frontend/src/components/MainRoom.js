@@ -50,6 +50,7 @@ const MainRoom = () => {
             name: selectedActivity,
             responsibilities: newResponsibilities,
             date: activityDate,
+            time: activityTime,
         };
         setActivities([...activities, newActivity]);
         setCreatingActivity(false);
@@ -112,8 +113,8 @@ const MainRoom = () => {
             <div className="main-content" >
                 {!activitySelected && !creatingActivity && !editingActivity && (
                     <div className="no-activity-selected">
-                        <h3 style={{fontSize: '25px'}}>No Activity Selected</h3>
-                        <p style={{fontSize: '20px'}}>Select an activity or get started with a new one</p>
+                        <h3>No Activity Selected</h3>
+                        <p>Select an activity or get started with a new one</p>
                         <button className="create-activity-btn"  onClick={handleCreateActivity}>Create New Activity</button>
                     </div>
                 )}
@@ -164,7 +165,7 @@ const MainRoom = () => {
                                     <option value="2">2</option>
                                     <option value="3">3</option>
                                 </select>
-                                <button style={{fontSize: '20px', backgroundColor: '#'}} onClick={handleAddResponsibility}>Add Responsibility</button>
+                                <button  onClick={handleAddResponsibility}>Add Responsibility</button>
                                 {newResponsibilities.length > 0 && (
                                 <div className='responsibility  '>
                                     <ul>
@@ -183,20 +184,18 @@ const MainRoom = () => {
                     </div>
                 )}
 
-                {activitySelected && currentActivity && !editingActivity && (
+{activitySelected && currentActivity && !editingActivity && (
                     <div className="activity-details">
-
-                        <h3 style={{fontSize: '30px'}}>{currentActivity.name}</h3>
-                        <button  style={{fontSize: '20px'}} onClick={handleEditActivity}>Edit Activity</button>
-
-                        <p style={{fontSize: '20px'}}>Date: {currentActivity.date}</p>
-                        <h4 style={{fontSize: '25px'}}>Responsibilities:</h4>
+                        <h3>{currentActivity.name}</h3>
+                        <p>Date: {currentActivity.date}</p>
+                        <p>Time: {currentActivity.time}</p>
+                        <button onClick={handleEditActivity}>Edit Activity</button>
+                        <h4>Responsibilities:</h4>
                         <ul>
                             {currentActivity.responsibilities.map((resp, index) => (
-                                <li style={{fontSize: '20px'}} key={index}>{resp.text} - Complexity: {resp.complexity}</li>
+                                <li key={index}>{resp.text} - Complexity: {resp.complexity}</li>
                             ))}
                         </ul>
-
                     </div>
                 )}
 
@@ -209,6 +208,14 @@ const MainRoom = () => {
                                 type="date"
                                 value={activityDate}
                                 onChange={(e) => setActivityDate(e.target.value)}
+                            />
+                        </label>
+                        <label>
+                            Activity Time:
+                            <input 
+                                type="time" 
+                                value={activityTime}
+                                onChange={(e) => setActivityTime(e.target.value)}
                             />
                         </label>
                         <h4>Edit Responsibilities</h4>
@@ -229,16 +236,16 @@ const MainRoom = () => {
                         </select>
                         <button onClick={handleAddResponsibility}>Add Responsibility</button>
                         {newResponsibilities.length > 0 && (
-                                <div className='responsibility  '>
-                                    <ul>
-                                        {newResponsibilities.map((resp, index) => (
-                                            <li key={index}>
-                                                {resp.text} - Complexity: {resp.complexity}
-                                                <button onClick={() => handleDeleteResponsibility(index)}>Delete</button>
-                                            </li>
-                                        ))}
-                                    </ul>
-                                </div>
+                        <div className='responsibility  '>
+                            <ul>
+                                {newResponsibilities.map((resp, index) => (
+                                    <li key={index}>
+                                        {resp.text} - Complexity: {resp.complexity}
+                                        <button onClick={() => handleDeleteResponsibility(index)}>Delete</button>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
                         )}
                         <button style={{fontSize: '30px'}} onClick={handleSaveEditedActivity}>Save Changes</button>
                     </div>
