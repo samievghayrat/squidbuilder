@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.boyz.squidbuilder.entity.LoginRequest;
@@ -51,4 +52,9 @@ public class UserController {
     // public ResponseEntity<Optional<User>> getUser(@PathVariable String username){
     //     return new ResponseEntity<Optional<User>>(userService.getByUsername(username), HttpStatus.OK);
     // }
+
+    @GetMapping("/{username}/rooms")
+    public ResponseEntity<?> roomsOfUser(@RequestParam String username){
+        return ResponseEntity.ok(userService.getRooms(username));
+    }
 }
