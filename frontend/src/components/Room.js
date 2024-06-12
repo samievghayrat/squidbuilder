@@ -114,6 +114,8 @@ const Room = ({ onLogout, username }) => {
         </div>
       )}
               <button  onClick = {handleNavigateToActivity}>Test Activity Page</button>
+              <button onClick={() => navigate('/projects')}>Go to Project Management</button> {/* Navigation button */}
+
 
     </div>
     
