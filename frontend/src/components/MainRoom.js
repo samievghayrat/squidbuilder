@@ -12,6 +12,7 @@ const MainRoom = () => {
     const [newResponsibilityComplexity, setNewResponsibilityComplexity] = useState('');
     const [currentActivity, setCurrentActivity] = useState(null);
     const [activityDate, setActivityDate] = useState('');
+    const [activityTime, setActivityTime] = useState('');
 
     const activityOptions = ['Football', 'Basketball', 'Volleyball', 'Picnic'];
 
@@ -22,6 +23,7 @@ const MainRoom = () => {
         setSelectedActivity('');
         setNewResponsibilities([]);
         setActivityDate('');
+        setActivityTime('');
     };
 
     const handleSelectActivity = (event) => {
@@ -54,6 +56,7 @@ const MainRoom = () => {
         setNewResponsibilities([]);
         setSelectedActivity('');
         setActivityDate('');
+        setActivityTime('');
     };
 
     const handleEditActivity = () => {
@@ -69,6 +72,7 @@ const MainRoom = () => {
         setCreatingActivity(false);
         setSelectedActivity(activity.name);
         setActivityDate(activity.date);
+        setActivityTime(activity.time);
     };
 
     const handleSaveEditedActivity = () => {
@@ -84,10 +88,10 @@ const MainRoom = () => {
     };
 
     return (
-        <div className="dashboard">
-            <div className="sidebar">
-                <h2>Your Activities</h2>
-                <button className="add-activity-btn" onClick={handleCreateActivity}>+ Add Activity</button>
+        <div className="dashboard" >
+            <div className="sidebar" style={{backgroundColor: 'green'}}>
+                <h2 style={{backgroundColor: 'green'}}>Your Activities</h2>
+                <button className="add-activity-btn" style={{backgroundColor: 'green'}} onClick={handleCreateActivity}>+ Add Activity</button>
                 <ul>
                     {activities.map((activity, index) => (
                         <li key={index}>
@@ -98,7 +102,7 @@ const MainRoom = () => {
                     ))}
                 </ul>
             </div>
-            <div className="main-content">
+            <div className="main-content" >
                 {!activitySelected && !creatingActivity && !editingActivity && (
                     <div className="no-activity-selected">
                         <h3>No Activity Selected</h3>
@@ -124,6 +128,15 @@ const MainRoom = () => {
                                 type="date"
                                 value={activityDate}
                                 onChange={(e) => setActivityDate(e.target.value)}
+                            />
+
+                            <input
+                                type="time"
+                                value={setActivityTime}
+                                onChange={(e) => setActivityTime(e.target.value)
+
+                                }
+
                             />
                         </label>
                         {selectedActivity && (

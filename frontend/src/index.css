@@ -224,11 +224,11 @@ button:hover {
 
 
 .create-activity {
-  margin-top: 20px;
+  margin-top: 0px;
 }
 
 .create-activity h4 {
-  margin-top: 20px;
+  margin-top: 0px;
 }
 
 .create-activity input,
@@ -237,9 +237,10 @@ button:hover {
   margin: 10px 0;
   padding: 10px;
   width: 100%;
-  max-width: 300px;
+  max-width: 500px;
   border: 1px solid #ddd;
   border-radius: 5px;
+  font-size: large;
 }
 
 .create-activity button {
