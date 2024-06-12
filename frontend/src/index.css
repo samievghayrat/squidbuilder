@@ -1,14 +1,13 @@
-
 body {
   font-family: Arial, sans-serif;
-  background-color: #ffffff;
+  background-color: #f4f4f4;
   margin: 0;
   padding: 0;
   display: flex;
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background-image: repeating-linear-gradient(to right, #ffffff, #ffffff 10px, transparent 10px 20px );
+  background-image: repeating-linear-gradient(to right, #fff, #fff 10px, transparent 10px 20px);
   background-size: 20px 100vh;
   background-position: 0% 50%;
 }
@@ -327,4 +326,9 @@ button:hover {
 
 .responsibility ul li button{
   margin-left: 100px;
+}
+
+.sidebar h2 {
+  background-color: #066a2200; /* 20% transparency */
+  color: white;
 }

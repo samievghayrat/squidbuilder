@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import axios from "../api/axiosConfig";
 import './sidebar.css';
 
-const MainRoom = ({username}) => {
+const MainRoom = ({ username }) => {
 
     const [activities, setActivities] = useState([]);
     const [activitySelected, setActivitySelected] = useState(false);
@@ -26,15 +26,15 @@ const MainRoom = ({username}) => {
         console.log('room id is: ', roomId);
         console.log("username: ", username);
         axios.get(`/rooms/get/${roomId}`)
-          .then(response => {
-            const room = response.data;
-            setActivities(room.activities ?? []);
-            setMembers(room.users ?? []);
-          })
-          .catch(error => {
-            console.error('There was an error fetching the movies!', error);
-          });
-      }, []);
+            .then(response => {
+                const room = response.data;
+                setActivities(room.activities ?? []);
+                setMembers(room.users ?? []);
+            })
+            .catch(error => {
+                console.error('There was an error fetching the movies!', error);
+            });
+    }, []);
 
     const handleCreateActivity = () => {
         setCreatingActivity(true);
@@ -81,7 +81,7 @@ const MainRoom = ({username}) => {
         try {
             await axios.post(`/rooms/add/activity/${roomId}`, newActivity);
             console.log("activity was added successfully");
-        } catch(error){
+        } catch (error) {
             console.log("SOMETHING WENT WRONG WHEN ADDING ACTIVITY: ", error);
         }
         setActivities([...activities, newActivity]);
@@ -116,16 +116,16 @@ const MainRoom = ({username}) => {
         setActivities(
             activities.map(activity =>
                 activity.key === currentActivity.key
-                    ? { ...activity, responsibilities: newResponsibilities}
+                    ? { ...activity, responsibilities: newResponsibilities }
                     : activity
             )
         );
-        const sometActivity = { ...currentActivity, responsibilities: newResponsibilities};
+        const sometActivity = { ...currentActivity, responsibilities: newResponsibilities };
         console.log(sometActivity);
         try {
             await axios.put(`rooms/change/activity/${roomId}?key=${currentActivity.key}`, sometActivity);
             console.log("was changed successfully");
-        } catch(error){
+        } catch (error) {
             console.log("something went wrong when changing activity", error);
         }
         setEditingActivity(false);
@@ -145,19 +145,25 @@ const MainRoom = ({username}) => {
     return (
         <div className="dashboard" >
             <div className="sidebar" style={{
-                  backgroundImage: `url(https://media.istockphoto.com/id/499753566/vector/realistic-vertical-football-soccer-field-illustration.jpg?s=612x612&w=0&k=20&c=ELS22Ba_t2A-OGmwuISIX_OW40oeIbsSszOkHfjwMQ0=), repeating-linear-gradient(to right, green, #ffffff 10px, transparent 10px 20px)`,
-                  backgroundSize: 'auto', // Adjust the size to make the image auto-scale to fit
-                  backgroundPosition: 'center', // Center the image within the div
-                  height: '100vh',
-                  
-                  width: '250px'
-                }}>
-                <h2 style={{backgroundColor: 'black ', color: 'white', fontSize: '35px', paddingTop: '10px'}}>Your Activities</h2>
-                <button className="add-activity-btn" style={{backgroundColor: 'transparent'}} onClick={handleCreateActivity}>+ Add Activity</button>
+                backgroundSize: 'auto',
+                backgroundPosition: 'center',
+                height: '100vh',
+                background: 'linear-gradient(to bottom, green 40%, white 120%)',
+                width: '250px'
+            }}>
+                <button
+                    style={{ fontSize: '35px', paddingTop: '10px', backgroundColor: '#02590F', width: '290px', textAlign: 'center' }}
+                    onClick={() => { /* Add your event handler code here */ }}
+                    className="activity-btn"
+                >
+                    Members
+                </button>                            
+                <h2 style={{ fontSize: '35px', paddingTop: '10px', backgroundColor: '#02590F', width: '290px', textAlign: 'center' }}>Your Activities</h2>
+                <button className="add-activity-btn" style={{ backgroundColor: 'transparent' }} onClick={handleCreateActivity}>+ Add Activity</button>
                 <ul>
                     {activities.map((activity, index) => (
                         <li key={index}>
-                            <button onClick={() => handleActivityClick(activity)} className="activity-btn">
+                            <button style={{ backgroundColor: 'transparent', textAlign: 'start' }} onClick={() => handleActivityClick(activity)} className="activity-btn">
                                 {activity.name}
                             </button>
                         </li>
@@ -167,17 +173,17 @@ const MainRoom = ({username}) => {
             <div className="main-content" >
                 {!activitySelected && !creatingActivity && !editingActivity && (
                     <div className="no-activity-selected">
-                        <h3 style={{fontSize: '28px'}}>No Activity Selected</h3>
-                        <p style={{fontSize: '23px'}}>Select an activity or get started with a new one</p>
-                        <button style={{fontSize: '28px'}} className="create-activity-btn"  onClick={handleCreateActivity}>Create New Activity</button>
+                        <h3 style={{ fontSize: '28px' }}>No Activity Selected</h3>
+                        <p style={{ fontSize: '23px' }}>Select an activity or get started with a new one</p>
+                        <button style={{ fontSize: '28px' }} className="create-activity-btn" onClick={handleCreateActivity}>Create New Activity</button>
                     </div>
                 )}
 
                 {creatingActivity && (
                     <div className="create-activity" >
-                        <h3 style={{fontSize: '40px', color: 'green'}}>Create New Activity</h3>
+                        <h3 style={{ fontSize: '40px', color: 'green' }}>Create New Activity</h3>
                         <label>
-                           
+
                             <select value={selectedActivity} onChange={handleSelectActivity}>
                                 <option value="" disabled>Select an activity</option>
                                 {activityOptions.map((activity) => (
@@ -203,7 +209,7 @@ const MainRoom = ({username}) => {
                         </label>
                         {selectedActivity && (
                             <>
-                                <h4 style={{fontSize: '20px', textAlign: 'center', paddingTop: '10px', }}>Add Responsibilities</h4>
+                                <h4 style={{ fontSize: '20px', textAlign: 'center', paddingTop: '10px', }}>Add Responsibilities</h4>
                                 <input
                                     type="text"
                                     value={newResponsibilityText}
@@ -219,35 +225,35 @@ const MainRoom = ({username}) => {
                                     <option value="2">2</option>
                                     <option value="3">3</option>
                                 </select>
-                                <button   style={{backgroundColor: 'black' }} onClick={handleAddResponsibility}>Add Responsibility</button>
+                                <button style={{ backgroundColor: 'black' }} onClick={handleAddResponsibility}>Add Responsibility</button>
                                 {newResponsibilities.length > 0 && (
-                                <div className='responsibility  '>
-                                    <ul>
-                                        {newResponsibilities.map((resp, index) => (
-                                            <li key={index}>
-                                                {resp.responsibility} - Complexity: {resp.complexity}
-                                                <button onClick={() => handleDeleteResponsibility(index)}>Delete</button>
-                                            </li>
-                                        ))}
-                                    </ul>
-                                </div>
+                                    <div className='responsibility  '>
+                                        <ul>
+                                            {newResponsibilities.map((resp, index) => (
+                                                <li key={index}>
+                                                    {resp.responsibility} - Complexity: {resp.complexity}
+                                                    <button onClick={() => handleDeleteResponsibility(index)}>Delete</button>
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    </div>
                                 )}
-                                <button style={{fontSize: '35px'}} onClick={handleSaveActivity}>Save Activity</button>
+                                <button style={{ fontSize: '35px' }} onClick={handleSaveActivity}>Save Activity</button>
                             </>
                         )}
                     </div>
                 )}
 
-{activitySelected && currentActivity && !editingActivity && (
+                {activitySelected && currentActivity && !editingActivity && (
                     <div className="activity-details">
-                        <h3 style={{fontSize: '28px'}}>{currentActivity.name}</h3>
-                        <p style={{fontSize: '25px'}}>Date: {(new Date(currentActivity.date)).toDateString()}</p>
-                        <p style={{fontSize: '25px'}}>Time: {(new Date(currentActivity.date)).toLocaleTimeString()}</p>
-                        <button style={{fontSize: '20px'}} onClick={handleEditActivity}>Edit Activity</button>
-                        <h4 style={{fontSize: '28px'}}>Responsibilities:</h4>
+                        <h3 style={{ fontSize: '28px' }}>{currentActivity.name}</h3>
+                        <p style={{ fontSize: '25px' }}>Date: {(new Date(currentActivity.date)).toDateString()}</p>
+                        <p style={{ fontSize: '25px' }}>Time: {(new Date(currentActivity.date)).toLocaleTimeString()}</p>
+                        <button style={{ fontSize: '20px' }} onClick={handleEditActivity}>Edit Activity</button>
+                        <h4 style={{ fontSize: '28px' }}>Responsibilities:</h4>
                         <ul>
                             {currentActivity.responsibilities.map((resp, index) => (
-                                <li  style={{fontSize: '20px'}} key={index}>{resp.responsibility} - Complexity: {resp.complexity}</li>
+                                <li style={{ fontSize: '20px' }} key={index}>{resp.responsibility} - Complexity: {resp.complexity}</li>
                             ))}
                         </ul>
                         <button type="submit" onClick={randomalgorithm}>Distribute responsibilities</button>
@@ -291,18 +297,18 @@ const MainRoom = ({username}) => {
                         </select>
                         <button onClick={handleAddResponsibility}>Add Responsibility</button>
                         {newResponsibilities.length > 0 && (
-                        <div className='responsibility  '>
-                            <ul>
-                                {newResponsibilities.map((resp, index) => (
-                                    <li key={index}>
-                                        {resp.responsibility} - Complexity: {resp.complexity}
-                                        <button onClick={() => handleDeleteResponsibility(index)}>Delete</button>
-                                    </li>
-                                ))}
-                            </ul>
-                        </div>
+                            <div className='responsibility  '>
+                                <ul>
+                                    {newResponsibilities.map((resp, index) => (
+                                        <li key={index}>
+                                            {resp.responsibility} - Complexity: {resp.complexity}
+                                            <button onClick={() => handleDeleteResponsibility(index)}>Delete</button>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
                         )}
-                        <button style={{fontSize: '30px'}} onClick={handleSaveEditedActivity}>Save Changes</button>
+                        <button style={{ fontSize: '30px' }} onClick={handleSaveEditedActivity}>Save Changes</button>
                     </div>
                 )}
             </div>
