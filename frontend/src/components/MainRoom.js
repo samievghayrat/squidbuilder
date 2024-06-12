@@ -89,9 +89,16 @@ const MainRoom = () => {
 
     return (
         <div className="dashboard" >
-            <div className="sidebar" style={{backgroundColor: 'green'}}>
-                <h2 style={{backgroundColor: 'green'}}>Your Activities</h2>
-                <button className="add-activity-btn" style={{backgroundColor: 'green'}} onClick={handleCreateActivity}>+ Add Activity</button>
+            <div className="sidebar" style={{
+                  backgroundImage: `url(https://media.istockphoto.com/id/499753566/vector/realistic-vertical-football-soccer-field-illustration.jpg?s=612x612&w=0&k=20&c=ELS22Ba_t2A-OGmwuISIX_OW40oeIbsSszOkHfjwMQ0=), repeating-linear-gradient(to right, green, #ffffff 10px, transparent 10px 20px)`,
+                  backgroundSize: 'auto', // Adjust the size to make the image auto-scale to fit
+                  backgroundPosition: 'center', // Center the image within the div
+                  height: '100vh',
+                  
+                  width: '250px'
+                }}>
+                <h2 style={{backgroundColor: 'black ', color: 'white', fontSize: '35px', paddingTop: '10px'}}>Your Activities</h2>
+                <button className="add-activity-btn" style={{backgroundColor: 'transparent'}} onClick={handleCreateActivity}>+ Add Activity</button>
                 <ul>
                     {activities.map((activity, index) => (
                         <li key={index}>
@@ -132,7 +139,7 @@ const MainRoom = () => {
 
                             <input
                                 type="time"
-                                value={setActivityTime}
+                                value={activityTime}
                                 onChange={(e) => setActivityTime(e.target.value)
 
                                 }
@@ -146,7 +153,7 @@ const MainRoom = () => {
                                     type="text"
                                     value={newResponsibilityText}
                                     onChange={(e) => setNewResponsibilityText(e.target.value)}
-                                    placeholder="Responsibility"
+                                    placeholder="write a responsibility"
                                 />
                                 <select
                                     value={newResponsibilityComplexity}
@@ -157,7 +164,7 @@ const MainRoom = () => {
                                     <option value="2">2</option>
                                     <option value="3">3</option>
                                 </select>
-                                <button onClick={handleAddResponsibility}>Add Responsibility</button>
+                                <button style={{fontSize: '20px', backgroundColor: '#'}} onClick={handleAddResponsibility}>Add Responsibility</button>
                                 <ul>
                                     {newResponsibilities.map((resp, index) => (
                                         <li key={index}>
@@ -166,7 +173,7 @@ const MainRoom = () => {
                                         </li>
                                     ))}
                                 </ul>
-                                <button onClick={handleSaveActivity}>Save Activity</button>
+                                <button style={{fontSize: '35px'}} onClick={handleSaveActivity}>Save Activity</button>
                             </>
                         )}
                     </div>

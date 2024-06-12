@@ -51,14 +51,14 @@ const App = () => {
 
         <Route path="/" element={ isLoggedIn ? <Navigate to="/room" /> :
             <div className="App">
-            <h1>Welcome to SquadBuilder</h1>
-            <h3>Let's do group activities together</h3>
+            <h1 style={{fontSize: '45px'}}>Welcome to SquadBuilder</h1>
+            <h3 style={{fontSize: '25px', textAlign: 'center', paddingBottom: '5px'}}>Let's do group activities together</h3>
             {isLogin ? (
               <LoginForm onLogin={handleLogin} />
             ) : (
               <RegisterForm onRegister={handleRegister} />
             )}
-            <button className="toggle-button" onClick={() => setIsLogin(!isLogin)}>
+            <button style={{fontSize: '20px'}} className="toggle-button" onClick={() => setIsLogin(!isLogin)}>
               {isLogin ? "Don't have an account? Register" : "Already have an account? Login"}
             </button>
           </div>

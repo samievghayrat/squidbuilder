@@ -27,7 +27,7 @@ const RegisterForm = ({ onRegister }) => {
 
   return (
     <form onSubmit={handleSubmit}>
-      <h2>Register</h2>
+      <h2 style={{textAlign: 'center'}}>Register</h2>
       {/* <div>
         <label>Email:</label>
         <input
@@ -39,8 +39,8 @@ const RegisterForm = ({ onRegister }) => {
       </div> */}
       
       <div>
-        <label>Username:</label>
-        <input
+        <label style={{fontSize: '20px'}}>Username:</label>
+        <input style={{fontSize: '20px'}}
           type="username"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
@@ -48,15 +48,15 @@ const RegisterForm = ({ onRegister }) => {
         />
       </div>
       <div>
-        <label>Password:</label>
-        <input
+        <label style={{fontSize: '20px'}}>Password:</label>
+        <input style={{fontSize: '20px'}}
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
         />
       </div>
-      <button type="submit">Register</button>
+      <button style={{fontSize: '25px'}} type="submit">Register</button>
     </form>
   );
 };

@@ -1,14 +1,14 @@
 
 body {
   font-family: Arial, sans-serif;
-  background-color: #f4f4f4;
+  background-color: #ffffff;
   margin: 0;
   padding: 0;
   display: flex;
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background-image: repeating-linear-gradient(to right, #ffffff, #ffffff 10px, transparent 10px 20px);
+  background-image: repeating-linear-gradient(to right, #ffffff, #ffffff 10px, transparent 10px 20px );
   background-size: 20px 100vh;
   background-position: 0% 50%;
 }
@@ -259,19 +259,19 @@ button:hover {
 }
 
 .create-activity ul li button{
-  background-color: #dc3545;;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;  
 }
 
 .create-activity ul li button:hover{
-  background-color: #a7212e;
 }
 
 .edit-activity ul li button{
-  background-color: #dc3545;
 }
 
 .edit-activity ul li button:hover{
-  background-color: #a7212e;
 }
 
 .edit-activity input,

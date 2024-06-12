@@ -25,10 +25,10 @@ const LoginForm = ({ onLogin }) => {
   return (
     <div className="login-container">
       <form onSubmit={handleSubmit}>
-        <h2>Login</h2>
+        <h2 style={{fontSize: '30px', textAlign: 'center'}}>Login</h2>
         <div>
-          <label>Username:</label>
-          <input
+          <label style={{fontSize: '20px'}}>Username:</label>
+          <input style={{fontSize: '20px'}}
             type="text"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
@@ -36,15 +36,15 @@ const LoginForm = ({ onLogin }) => {
           />
         </div>
         <div>
-          <label>Password:</label>
-          <input
+          <label style={{fontSize: '25px'}}>Password:</label>
+          <input style={{fontSize: '20px'}}
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
           />
         </div>
-        <button type="submit">Login</button>
+        <button style={{fontSize: '25px', backgroundColor: 'green'}} type="submit">Login</button>
       </form>
     </div>
   );
