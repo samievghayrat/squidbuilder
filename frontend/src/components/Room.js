@@ -62,6 +62,8 @@ const Room = ({ onLogout, username }) => {
     navigate('/activity', { username }); // Navigate to Activity page with username param
   };
 
+  
+
   return (
     <div>
       <button className="logout-button" onClick={onLogout}>Logout</button>
@@ -116,8 +118,7 @@ const Room = ({ onLogout, username }) => {
           </div>
         </div>
       )}
-              <button  onClick = {handleNavigateToActivity}>Test Activity Page</button>
-              <button onClick={() => navigate('/projects')}>Go to Project Management</button> {/* Navigation button */}
+              
 
 
     </div>
