@@ -116,6 +116,7 @@ const Room = ({ onLogout, username }) => {
               <button  onClick = {handleNavigateToActivity}>Test Activity Page</button>
 
     </div>
+    
   );
 };
 

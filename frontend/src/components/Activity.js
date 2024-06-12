@@ -1,26 +1,39 @@
-import React, { useState } from 'react';
-import DateTimePicker from 'react-datetime-picker';
+import React, { useRef } from 'react';
 
 const Activity = ({ username }) => {
-  const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setEndDate] = useState(null);
-  const [activityName, setActivityName] = useState('');
-  const [activityDescription, setActivityDescription] = useState('');
-
-  const handleStartTimeChange = (date) => setStartDate(date);
-  const handleEndTimeChange = (date) => setEndDate(date);
-  const handleActivityNameChange = (e) => setActivityName(e.target.value);
-  const handleActivityDescriptionChange = (e) => setActivityDescription(e.target.value);
+  const activityNameRef = useRef();
+  const activityDescriptionRef = useRef();
+  const startDateRef = useRef();
+  const startTimeRef = useRef();
+  const endDateRef = useRef();
+  const endTimeRef = useRef();
 
   const handleSubmitActivity = async (e) => {
     e.preventDefault();
-    if (activityName.trim() === '' || !startDate || !endDate) {
+    const activityName = activityNameRef.current.value;
+    const activityDescription = activityDescriptionRef.current.value;
+    const startDate = startDateRef.current.value;
+    const startTime = startTimeRef.current.value;
+    const endDate = endDateRef.current.value;
+    const endTime = endTimeRef.current.value;
+
+    if (
+      activityName.trim() === '' ||
+      activityDescription.trim() === '' ||
+      startDate === '' ||
+      startTime === '' ||
+      endDate === '' ||
+      endTime === ''
+    ) {
       alert("Please fill in all fields and select both start and finish times");
       return;
     }
 
+    const startDateTime = new Date(`${startDate}T${startTime}`);
+    const endDateTime = new Date(`${endDate}T${endTime}`);
+
     // Validation check: Ensure finish time is after start time
-    if (endDate < startDate) {
+    if (endDateTime <= startDateTime) {
       alert("Finish time cannot be before start time");
       return;
     }
@@ -29,8 +42,8 @@ const Activity = ({ username }) => {
       const activityData = {
         name: activityName,
         description: activityDescription,
-        startTime: startDate.toISOString(), // Convert to ISO format for server
-        endTime: endDate.toISOString(),
+        startTime: startDateTime.toISOString(),
+        endTime: endDateTime.toISOString(),
         username,
       };
 
@@ -45,10 +58,12 @@ const Activity = ({ username }) => {
       }
 
       // Handle successful activity creation (e.g., clear form or redirect)
-      setActivityName('');
-      setActivityDescription('');
-      setStartDate(new Date());
-      setEndDate(null);
+      activityNameRef.current.value = '';
+      activityDescriptionRef.current.value = '';
+      startDateRef.current.value = '';
+      startTimeRef.current.value = '';
+      endDateRef.current.value = '';
+      endTimeRef.current.value = '';
       alert("Activity created successfully!");
     } catch (error) {
       alert("Failed to create activity");
@@ -65,8 +80,7 @@ const Activity = ({ username }) => {
           <input
             type="text"
             id="activity-name"
-            value={activityName}
-            onChange={handleActivityNameChange}
+            ref={activityNameRef}
             required
           />
         </div>
@@ -74,26 +88,49 @@ const Activity = ({ username }) => {
           <label htmlFor="activity-description">Description:</label>
           <textarea
             id="activity-description"
-            value={activityDescription}
-            onChange={handleActivityDescriptionChange}
+            ref={activityDescriptionRef}
             required
           />
         </div>
         <div>
           <h2>Schedule</h2>
-          <div className="time-pickers">
+          <div className="date-time-pickers">
             <div>
-              <label htmlFor="start-time">Start Time:</label>
-              <DateTimePicker
-                onChange={handleStartTimeChange}
-                value={startDate}
-                timeFormat="HH:mm"
-                autoClose={true} // Add this prop
-
+              <label htmlFor="start-date">Start Date:</label>
+              <input
+                type="date"
+                id="start-date"
+                ref={startDateRef}
+                required
               />
             </div>
-           
-          
+            <div>
+              <label htmlFor="start-time">Start Time:</label>
+              <input
+                type="time"
+                id="start-time"
+                ref={startTimeRef}
+                required
+              />
+            </div>
+            <div>
+              <label htmlFor="end-date">End Date:</label>
+              <input
+                type="date"
+                id="end-date"
+                ref={endDateRef}
+                required
+              />
+            </div>
+            <div>
+              <label htmlFor="end-time">End Time:</label>
+              <input
+                type="time"
+                id="end-time"
+                ref={endTimeRef}
+                required
+              />
+            </div>
           </div>
         </div>
         <button type="submit">Create Activity</button>
