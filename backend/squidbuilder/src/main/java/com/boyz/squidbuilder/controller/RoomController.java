@@ -24,6 +24,7 @@ import com.boyz.squidbuilder.service.RoomService;
 @RestController
 @RequestMapping("/rooms")
 public class RoomController {
+    
     @Autowired
     private RoomService roomService;
 
@@ -41,7 +42,7 @@ public class RoomController {
     @PostMapping("/create/{username}")
     public ResponseEntity<?> createRoom(@RequestBody Room room, @PathVariable String username){
         if(roomService.createRoom(room, username)){
-            return ResponseEntity.status(HttpStatus.CREATED).body("Successfuly created");
+            return ResponseEntity.status(HttpStatus.CREATED).body(room.getId());
         } else {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Something is wrong");
         }

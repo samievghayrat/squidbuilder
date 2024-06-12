@@ -19,6 +19,7 @@ import com.boyz.squidbuilder.repository.UserRepository;
 
 @Service
 public class RoomService {
+    
     @Autowired
     private RoomRepository roomRepository;
 

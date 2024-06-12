@@ -37,14 +37,16 @@ const Room = ({ onLogout, username }) => {
       return;
     }
     try {
-      await axios.post('/rooms/create', {
-        roomName,
-        roomDescription,
-        username
+      const response = await axios.post(`/rooms/create/${username}`, {
+        name: roomName,
+        description: roomDescription,
       });
       setIsCreate(false);
       setRoomName('');
       setRoomDescription('');
+      
+      const roomId = response.data;
+      window.location.href = `/room/${roomId}`;
     } catch (error) {
       alert("Creating room failed");
       console.log(error);

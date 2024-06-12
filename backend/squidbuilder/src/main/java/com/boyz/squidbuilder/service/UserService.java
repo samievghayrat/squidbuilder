@@ -10,6 +10,7 @@ import com.boyz.squidbuilder.repository.UserRepository;
 
 @Service
 public class UserService {
+    
     @Autowired
     private UserRepository userRepository;
 
