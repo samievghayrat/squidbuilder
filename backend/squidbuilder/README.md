@@ -25,7 +25,7 @@ $ curl -v http://localhost:8080/get/664bebc05725fd2aebf804fd
 ```bash
 $ curl -v -X POST localhost:8080/rooms/create/kimki \
 -H 'Content-type:application/json' \
--d '{"event": "tashkili", "activity": "football"}'
+-d '{"name": "tashkili", "description": "lets gather and eat some cake"}'
 ```
 
 ### Join a User to Room

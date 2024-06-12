@@ -32,6 +32,7 @@ const Room = ({ onLogout, username }) => {
 
   const handleSubmitCreate = async (e) => {
     e.preventDefault();
+    console.log("here is the username: ", username);
     if (roomName.trim() === '' || roomDescription.trim() === '') {
       alert("Please fill in both room name and description");
       return;
@@ -46,7 +47,7 @@ const Room = ({ onLogout, username }) => {
       setRoomDescription('');
       
       const roomId = response.data;
-      window.location.href = `/room/${roomId}`;
+      navigate(`/room/${roomId}`, {username, roomId});
     } catch (error) {
       alert("Creating room failed");
       console.log(error);
