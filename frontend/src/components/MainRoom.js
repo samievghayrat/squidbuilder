@@ -132,7 +132,7 @@ const MainRoom = () => {
 
                             <input
                                 type="time"
-                                value={setActivityTime}
+                                value={activityTime}
                                 onChange={(e) => setActivityTime(e.target.value)
 
                                 }
