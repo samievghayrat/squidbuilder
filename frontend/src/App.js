@@ -5,7 +5,6 @@ import RegisterForm from './components/RegisterForm';
 import Room from './components/Room';
 import Activity from './components/Activity';  // Import Activity component
 import ProjectManagement from './components/task_manager/ProjectManagement';
-
 import './index';
 
 
@@ -48,6 +47,7 @@ const App = () => {
           <Route path='/activity' element={<Activity username={username} />} />  {/* New route */}
           <Route path='/projects' element={<ProjectManagement />} />  {/* New route */}
           <Route path='/room/:id' element={<ProjectManagement/>}></Route>
+
         <Route path="/" element={ isLoggedIn ? <Navigate to="/room" /> :
             <div className="App">
             <h1>Welcome to SquidBuilder</h1>
