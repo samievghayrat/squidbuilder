@@ -8,7 +8,7 @@ body {
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background-image: repeating-linear-gradient(to right, #fff, #fff 10px, transparent 10px 20px);
+  background-image: repeating-linear-gradient(to right, #ffffff, #ffffff 10px, transparent 10px 20px);
   background-size: 20px 100vh;
   background-position: 0% 50%;
 }
@@ -150,7 +150,7 @@ button:hover {
 
 .activity-form input,
 .activity-form textarea {
-  width: calc(100% - 130px); /* Adjust based on label width */
+  width: calc(100% - 160%); /* Adjust based on label width */
   padding: 5px; /* Add padding for better spacing */
 }
 
@@ -185,8 +185,8 @@ button:hover {
 .sidebar {
   width: 200px;
   padding: 20px;
-  background-color: #f5f5f5;
-  border-right: 1px solid #ddd;
+  background-color: hsl(113, 100%, 46%);
+  border-right: 1px solid hwb(127 16% 24%);
 }
 
 .add-activity-btn {
@@ -213,6 +213,7 @@ button:hover {
 }
 
 .create-activity-btn {
+  font-size: 25px;
   padding: 10px;
   color: #fff;
   border: none;
@@ -250,6 +251,7 @@ button:hover {
   cursor: pointer;
   margin-top: 10px;
 }
+
 
 .create-activity button:hover {
   background-color: #218838;

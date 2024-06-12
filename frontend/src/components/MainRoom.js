@@ -103,15 +103,15 @@ const MainRoom = () => {
                     <div className="no-activity-selected">
                         <h3>No Activity Selected</h3>
                         <p>Select an activity or get started with a new one</p>
-                        <button className="create-activity-btn" onClick={handleCreateActivity}>Create New Activity</button>
+                        <button className="create-activity-btn"  onClick={handleCreateActivity}>Create New Activity</button>
                     </div>
                 )}
 
                 {creatingActivity && (
-                    <div className="create-activity">
-                        <h3>Create New Activity</h3>
+                    <div className="create-activity" >
+                        <h3 style={{fontSize: '40px', color: 'green'}}>Create New Activity</h3>
                         <label>
-                            Select Activity Type:
+                           
                             <select value={selectedActivity} onChange={handleSelectActivity}>
                                 <option value="" disabled>Select an activity</option>
                                 {activityOptions.map((activity) => (
@@ -120,7 +120,6 @@ const MainRoom = () => {
                             </select>
                         </label>
                         <label>
-                            Activity Date:
                             <input
                                 type="date"
                                 value={activityDate}
@@ -129,7 +128,7 @@ const MainRoom = () => {
                         </label>
                         {selectedActivity && (
                             <>
-                                <h4>Add Responsibilities</h4>
+                                <h4 style={{fontSize: '20px', textAlign: 'center', paddingTop: '10px'  }}>Add Responsibilities</h4>
                                 <input
                                     type="text"
                                     value={newResponsibilityText}
@@ -210,7 +209,7 @@ const MainRoom = () => {
                                 </li>
                             ))}
                         </ul>
-                        <button onClick={handleSaveEditedActivity}>Save Changes</button>
+                        <button style={{fontSize: '30px'}} onClick={handleSaveEditedActivity}>Save Changes</button>
                     </div>
                 )}
             </div>
