@@ -42,7 +42,7 @@ public class RoomController {
     @PostMapping("/create/{username}")
     public ResponseEntity<?> createRoom(@RequestBody Room room, @PathVariable String username){
         if(roomService.createRoom(room, username)){
-            return ResponseEntity.status(HttpStatus.CREATED).body(room.getId());
+            return ResponseEntity.status(HttpStatus.CREATED).body(room.getId().toHexString());
         } else {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Something is wrong");
         }
