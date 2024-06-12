@@ -1,6 +1,4 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+
 body {
   font-family: Arial, sans-serif;
   background-color: #f4f4f4;
@@ -10,6 +8,9 @@ body {
   justify-content: center;
   align-items: center;
   min-height: 100vh;
+  background-image: repeating-linear-gradient(to right, #fff, #fff 10px, transparent 10px 20px);
+  background-size: 20px 100vh;
+  background-position: 0% 50%;
 }
 
 h1 {
