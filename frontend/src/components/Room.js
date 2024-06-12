@@ -1,18 +1,37 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from "../api/axiosConfig";
 import '../index.css';
 import { useNavigate } from 'react-router-dom';
-import Activity from '../components/Activity';
 
-const Room = ({ onLogout, username }) => {
+const Room = ({ onLogout }) => {
+
+  const [rooms, setRooms] = useState([]);
 
   const navigate = useNavigate();
 
+  const [username, setUsername] = useState('');
   const [isCreate, setIsCreate] = useState(false);
   const [isJoin, setIsJoin] = useState(false);
   const [roomId, setRoomId] = useState('');
   const [roomName, setRoomName] = useState('');
   const [roomDescription, setRoomDescription] = useState('');
+
+  useEffect(() => {
+    const storedUsername = localStorage.getItem('username');
+    if (storedUsername) {
+      setUsername(storedUsername);
+      axios.get(`/users/${storedUsername}/rooms`)
+        .then(response => {
+          console.log(response.data);
+          setRooms(response.data ?? []);
+        })
+        .catch(error => {
+          console.error('There was an error fetching the room data!', error);
+        });
+    } else {
+      navigate('/'); 
+    }
+  }, []);
 
   const handleSubmitJoin = async (e) => {
     e.preventDefault();
@@ -56,15 +75,15 @@ const Room = ({ onLogout, username }) => {
     }
   };
 
-
-  const handleNavigateToActivity = () => {
-    navigate('/activity', { username }); // Navigate to Activity page with username param
-  };
+  const handleOnClickRoom = (roomId) => {
+    console.log(roomId);
+    navigate(`/room/${roomId}`)
+  }
 
   
 
   return (
-    <div>
+    <div >
       <button style={{fontSize: '25px'}} className="logout-button" onClick={onLogout}>Logout</button>
       <div>
         <button style={{fontSize: '25px'}} className='create-room' onClick={() => setIsCreate(true)}>Create Room</button>
@@ -74,6 +93,18 @@ const Room = ({ onLogout, username }) => {
         }}>
           Join Room
         </button>
+        <div className='rooms'>
+          <p>Current Rooms: </p>
+        <ul>
+            {rooms.map((room, index) => (
+                <li key={index}>
+                    <button style={{ backgroundColor: 'transparent', textAlign: 'start', color: 'black' }} onClick={() => handleOnClickRoom(room)}>
+                        room {index}
+                    </button>
+                </li>
+            ))}
+          </ul>
+        </div>
       </div>
       {isJoin && (
         <form onSubmit={handleSubmitJoin}>

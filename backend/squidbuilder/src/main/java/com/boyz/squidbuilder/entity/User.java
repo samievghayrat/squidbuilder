@@ -19,5 +19,5 @@ public class User {
     private ObjectId id;
     private String username;
     private String password;
-    private List<ObjectId> rooms;
+    private List<String> rooms;
 }

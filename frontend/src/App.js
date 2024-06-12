@@ -30,12 +30,14 @@ const App = () => {
     console.log("Register data:", username);
     setUsername(username);
     setIsLoggedIn(true);
-    localStorage.setItem('isLoggedIn', 'true');
+    localStorage.setItem('isLoggedIn', "true");
+    localStorage.setItem('username', username);
   };
 
   const handleLogout = () => {
     setIsLoggedIn(false);
     localStorage.removeItem('isLoggedIn');
+    localStorage.removeItem('username');
   };
   
 
@@ -43,12 +45,13 @@ const App = () => {
     <Router>
       <Routes>
         <Route path='/room' element={ !isLoggedIn ? <Navigate to="/" /> :
-          <Room onLogout={handleLogout} username={username}/>
+          <Room onLogout={handleLogout} />
         }/>
-          <Route path='/activity' element={<Activity username={username} />} />  {/* New route */}
-          <Route path='/projects' element={<ProjectManagement />} />  {/* New route */}
-          <Route path='/room/:id' element={!isLoggedIn ? <Navigate to="/" /> :
-            <MainRoom username={username} onLogout={handleLogout}/>}></Route>
+
+        <Route path='/activity' element={<Activity username={username} />} />  {/* New route */}
+        <Route path='/projects' element={<ProjectManagement />} />  {/* New route */}
+        <Route path='/room/:id' element={ !isLoggedIn ? <Navigate to="/" /> :
+          <MainRoom onLogout={handleLogout} />} />
 
         <Route path="/" element={ isLoggedIn ? <Navigate to="/room" /> :
             <div className="App">

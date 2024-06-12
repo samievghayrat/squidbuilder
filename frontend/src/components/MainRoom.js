@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import axios from "../api/axiosConfig";
 import './sidebar.css';
 
-const MainRoom = ({username, onLogout}) => {
+const MainRoom = ({onLogout}) => {
+    // const [username, setUsername] = useState('');
     const [activities, setActivities] = useState([]);
     const [activitySelected, setActivitySelected] = useState(false);
     const [creatingActivity, setCreatingActivity] = useState(false);
@@ -20,21 +21,28 @@ const MainRoom = ({username, onLogout}) => {
 
     const { id: roomId } = useParams();
 
+    const navigate = useNavigate();
+
     const activityOptions = ['Football', 'Basketball', 'Volleyball', 'Picnic'];
 
     useEffect(() => {
         console.log('room id is: ', roomId);
-        console.log("username: ", username);
-        axios.get(`/rooms/get/${roomId}`)
-          .then(response => {
-            const room = response.data;
-            setActivities(room.activities ?? []);
-            setMembers(room.members ?? []);
-          })
-          .catch(error => {
-            console.error('There was an error fetching the room data!', error);
-          });
-    }, []);
+        const storedUsername = localStorage.getItem('isLoggedIn');
+        if (storedUsername){
+            // setUsername(storedUsername);
+            axios.get(`/rooms/get/${roomId}`)
+            .then(response => {
+                const room = response.data;
+                setActivities(room.activities ?? []);
+                setMembers(room.members ?? []);
+            })
+            .catch(error => {
+                console.error('There was an error fetching the room data!', error);
+            });
+        } else {
+            navigate('/');
+        }
+    }, [roomId]);
 
     const handleCreateActivity = () => {
         setCreatingActivity(true);
@@ -170,12 +178,6 @@ const MainRoom = ({username, onLogout}) => {
         console.log(scores);
         return scores;
     }
-    const [isLogin, setIsLogin] = useState(true);
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
-    const handleLogout = () => {
-        setIsLoggedIn(false);
-        localStorage.removeItem('isLoggedIn');
-    };
 
     return (
         <div className="dashboard">

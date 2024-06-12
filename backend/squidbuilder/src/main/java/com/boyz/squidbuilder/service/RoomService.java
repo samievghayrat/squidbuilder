@@ -39,14 +39,16 @@ public class RoomService {
     }
 
     public boolean createRoom(Room room, String username){
+        
         List<String> users = new ArrayList<>();
         User user = userService.getByUsername(username).orElseThrow(() -> new RuntimeException("No user with that username"));
         users.add(user.getUsername());
-        List<ObjectId> rooms = user.getRooms();
+        List<String> rooms = user.getRooms();
         if(rooms == null){
             rooms = new ArrayList<>();
         }
-        rooms.add(room.getId());
+        roomRepository.save(room);
+        rooms.add(room.getId().toHexString());
         user.setRooms(rooms);
         room.setMembers(users);
         userRepository.save(user);

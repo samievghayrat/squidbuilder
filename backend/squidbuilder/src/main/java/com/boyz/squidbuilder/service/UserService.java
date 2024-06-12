@@ -37,7 +37,7 @@ public class UserService {
         return userRepository.findByUsername(username);
     }
 
-    public List<ObjectId> getRooms(String username){
+    public List<String> getRooms(String username){
         User user = userRepository.findByUsername(username).orElseThrow(() -> new RuntimeException("No user with that username"));
         return user.getRooms();
     }

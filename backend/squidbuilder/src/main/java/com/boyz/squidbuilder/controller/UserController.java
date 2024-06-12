@@ -54,7 +54,7 @@ public class UserController {
     // }
 
     @GetMapping("/{username}/rooms")
-    public ResponseEntity<?> roomsOfUser(@RequestParam String username){
+    public ResponseEntity<?> roomsOfUser(@PathVariable String username){
         return ResponseEntity.ok(userService.getRooms(username));
     }
 }
