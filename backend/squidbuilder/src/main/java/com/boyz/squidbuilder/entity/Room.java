@@ -19,6 +19,6 @@ public class Room {
     private ObjectId id;
     private String name;
     private String description;
-    private List<Activity> acitvity;
-    private List<User> users;
+    private List<Activity> activities;
+    private List<String> members;
 }

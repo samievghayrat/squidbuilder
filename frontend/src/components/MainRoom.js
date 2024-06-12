@@ -1,7 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
+import axios from "../api/axiosConfig";
 import './sidebar.css';
 
-const MainRoom = () => {
+const MainRoom = ({username}) => {
+
     const [activities, setActivities] = useState([]);
     const [activitySelected, setActivitySelected] = useState(false);
     const [creatingActivity, setCreatingActivity] = useState(false);
@@ -13,8 +16,25 @@ const MainRoom = () => {
     const [currentActivity, setCurrentActivity] = useState(null);
     const [activityDate, setActivityDate] = useState('');
     const [activityTime, setActivityTime] = useState('');
+    const [members, setMembers] = useState([]);
+
+    const { id: roomId } = useParams();
 
     const activityOptions = ['Football', 'Basketball', 'Volleyball', 'Picnic'];
+
+    useEffect(() => {
+        console.log('room id is: ', roomId);
+        console.log("username: ", username);
+        axios.get(`/rooms/get/${roomId}`)
+          .then(response => {
+            const room = response.data;
+            setActivities(room.activities ?? []);
+            setMembers(room.users ?? []);
+          })
+          .catch(error => {
+            console.error('There was an error fetching the movies!', error);
+          });
+      }, []);
 
     const handleCreateActivity = () => {
         setCreatingActivity(true);
@@ -30,12 +50,13 @@ const MainRoom = () => {
         setSelectedActivity(event.target.value);
     };
 
-    const handleAddResponsibility = () => {
+    const handleAddResponsibility = async () => {
         if (newResponsibilityText.trim() && newResponsibilityComplexity) {
             setNewResponsibilities([
                 ...newResponsibilities,
-                { text: newResponsibilityText, complexity: newResponsibilityComplexity },
+                { responsibility: newResponsibilityText, complexity: newResponsibilityComplexity },
             ]);
+
             setNewResponsibilityText('');
             setNewResponsibilityComplexity('');
         }
@@ -45,19 +66,30 @@ const MainRoom = () => {
         setNewResponsibilities(newResponsibilities.filter((_, i) => i !== index));
     };
 
-    const handleSaveActivity = () => {
+    const handleSaveActivity = async () => {
+        const dateTimeStr = `${activityDate}T${activityTime}`;
+        const newDate = new Date(dateTimeStr);
+        const date = newDate.getTime();
+        console.log(activities.length)
         const newActivity = {
+            key: activities.length,
             name: selectedActivity,
             responsibilities: newResponsibilities,
-            date: activityDate,
-            time: activityTime,
+            date: date,
         };
+        console.log(newActivity);
+        try {
+            await axios.post(`/rooms/add/activity/${roomId}`, newActivity);
+            console.log("activity was added successfully");
+        } catch(error){
+            console.log("SOMETHING WENT WRONG WHEN ADDING ACTIVITY: ", error);
+        }
         setActivities([...activities, newActivity]);
         setCreatingActivity(false);
         setNewResponsibilities([]);
         setSelectedActivity('');
-        setActivityDate('');
-        setActivityTime('');
+        // setActivityDate('');
+        // setActivityTime('');
     };
 
     const handleEditActivity = () => {
@@ -73,17 +105,29 @@ const MainRoom = () => {
         setCreatingActivity(false);
         setSelectedActivity(activity.name);
         setActivityDate(activity.date);
-        setActivityTime(activity.time);
     };
 
-    const handleSaveEditedActivity = () => {
+    const handleSaveEditedActivity = async () => {
+        console.log("current activ: ", currentActivity)
+        // const activityTime1 = activityTime ?? 0;
+        // const dateTimeStr = `${activityDate1}T${activityTime1}`;
+        // const newDate = new Date(dateTimeStr);
+        // const date = newDate.getTime();
         setActivities(
             activities.map(activity =>
-                activity.name === currentActivity.name
-                    ? { ...activity, responsibilities: newResponsibilities, date: activityDate }
+                activity.key === currentActivity.key
+                    ? { ...activity, responsibilities: newResponsibilities}
                     : activity
             )
         );
+        const sometActivity = { ...currentActivity, responsibilities: newResponsibilities};
+        console.log(sometActivity);
+        try {
+            await axios.put(`rooms/change/activity/${roomId}?key=${currentActivity.key}`, sometActivity);
+            console.log("was changed successfully");
+        } catch(error){
+            console.log("something went wrong when changing activity", error);
+        }
         setEditingActivity(false);
         setCurrentActivity(null);
     };
@@ -171,7 +215,7 @@ const MainRoom = () => {
                                     <ul>
                                         {newResponsibilities.map((resp, index) => (
                                             <li key={index}>
-                                                {resp.text} - Complexity: {resp.complexity}
+                                                {resp.responsibility} - Complexity: {resp.complexity}
                                                 <button onClick={() => handleDeleteResponsibility(index)}>Delete</button>
                                             </li>
                                         ))}
@@ -187,13 +231,13 @@ const MainRoom = () => {
 {activitySelected && currentActivity && !editingActivity && (
                     <div className="activity-details">
                         <h3 style={{fontSize: '28px'}}>{currentActivity.name}</h3>
-                        <p style={{fontSize: '25px'}}>Date: {currentActivity.date}</p>
-                        <p style={{fontSize: '25px'}}>Time: {currentActivity.time}</p>
+                        <p style={{fontSize: '25px'}}>Date: {(new Date(currentActivity.date)).toDateString()}</p>
+                        <p style={{fontSize: '25px'}}>Time: {(new Date(currentActivity.date)).toLocaleTimeString()}</p>
                         <button style={{fontSize: '20px'}} onClick={handleEditActivity}>Edit Activity</button>
                         <h4 style={{fontSize: '28px'}}>Responsibilities:</h4>
                         <ul>
                             {currentActivity.responsibilities.map((resp, index) => (
-                                <li  style={{fontSize: '20px'}} key={index}>{resp.text} - Complexity: {resp.complexity}</li>
+                                <li  style={{fontSize: '20px'}} key={index}>{resp.responsibility} - Complexity: {resp.complexity}</li>
                             ))}
                         </ul>
                     </div>
@@ -202,7 +246,7 @@ const MainRoom = () => {
                 {editingActivity && (
                     <div className="edit-activity">
                         <h3>Edit Activity</h3>
-                        <label>
+                        {/* <label>
                             Activity Date:
                             <input
                                 type="date"
@@ -217,7 +261,7 @@ const MainRoom = () => {
                                 value={activityTime}
                                 onChange={(e) => setActivityTime(e.target.value)}
                             />
-                        </label>
+                        </label> */}
                         <h4>Edit Responsibilities</h4>
                         <input
                             type="text"
@@ -240,7 +284,7 @@ const MainRoom = () => {
                             <ul>
                                 {newResponsibilities.map((resp, index) => (
                                     <li key={index}>
-                                        {resp.text} - Complexity: {resp.complexity}
+                                        {resp.responsibility} - Complexity: {resp.complexity}
                                         <button onClick={() => handleDeleteResponsibility(index)}>Delete</button>
                                     </li>
                                 ))}

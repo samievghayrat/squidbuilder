@@ -8,7 +8,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Responsibility {
+    private int key;
     private String username;
     private String responsibility;
-    private int level;
+    private int complexity;
 }

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import axios from "../api/axiosConfig";
 import '../index.css';
 import { useNavigate } from 'react-router-dom';
-import Activity from '../components/Activity'; // Import Activity component
+import Activity from '../components/Activity';
 
 const Room = ({ onLogout, username }) => {
 
@@ -21,8 +21,10 @@ const Room = ({ onLogout, username }) => {
       return;
     }
     try {
+      console.log(username, roomId);
       await axios.post(`/rooms/join/${roomId}?username=${username}`);
-      onJoin(roomId, username);
+      
+      navigate(`/room/${roomId}`)
     } catch (error) {
       alert("Joining failed");
       setRoomId('');
@@ -47,16 +49,13 @@ const Room = ({ onLogout, username }) => {
       setRoomDescription('');
       
       const roomId = response.data;
-      navigate(`/room/${roomId}`, {username, roomId});
+      navigate(`/room/${roomId}`);
     } catch (error) {
       alert("Creating room failed");
       console.log(error);
     }
   };
 
-  const onJoin = (roomId, username) => {
-    // Handle successful room join
-  };
 
   const handleNavigateToActivity = () => {
     navigate('/activity', { username }); // Navigate to Activity page with username param
