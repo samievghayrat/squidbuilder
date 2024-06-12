@@ -230,7 +230,6 @@ button:hover {
 .create-activity h4 {
   margin-top: 0px;
 }
-
 .create-activity input,
 .create-activity select {
   display: block;
@@ -259,30 +258,33 @@ button:hover {
 }
 
 .create-activity ul li button{
-  display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 8px 0;  
+  padding: 0px 0;  
+  background-color: transparent;
+  color: black;
+  width: 80px;
+}
+
+.create-activity ul li{
+  margin-top: 1px;
 }
 
 .create-activity ul li button:hover{
-}
-
-.edit-activity ul li button{
-}
-
-.edit-activity ul li button:hover{
+  background-color: transparent;
+  color: silver;
 }
 
 .edit-activity input,
-.edit-activity select{
+.edit-activity select {
   display: block;
   margin: 10px 0;
   padding: 10px;
   width: 100%;
-  max-width: 300px;
+  max-width: 500px;
   border: 1px solid #ddd;
   border-radius: 5px;
+  font-size: large;
 }
 
 .edit-activity button {
@@ -295,6 +297,34 @@ button:hover {
   margin-top: 10px;
 }
 
+
 .edit-activity button:hover {
   background-color: #218838;
+}
+
+.edit-activity ul li button{
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;  
+  background-color: transparent;
+  color: black;
+  width: 80px;
+}
+
+.edit-activity ul li button:hover{
+  background-color: transparent;
+  color: silver;
+}
+.responsibility {
+  max-height: 100px;
+  overflow-y: auto; /* Add vertical scrollbar when content exceeds height */
+}
+
+.responsibility {
+  border: 1px solid #000; /* Black border with 1px width */
+  border-radius: 5px;
+}
+
+.responsibility ul li button{
+  margin-left: 100px;
 }

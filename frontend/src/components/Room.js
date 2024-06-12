@@ -66,10 +66,10 @@ const Room = ({ onLogout, username }) => {
 
   return (
     <div>
-      <button className="logout-button" onClick={onLogout}>Logout</button>
+      <button style={{fontSize: '25px'}} className="logout-button" onClick={onLogout}>Logout</button>
       <div>
-        <button className='create-room' onClick={() => setIsCreate(true)}>Create Room</button>
-        <button onClick={() => {
+        <button style={{fontSize: '25px'}} className='create-room' onClick={() => setIsCreate(true)}>Create Room</button>
+        <button style={{fontSize: '25px'}} onClick={() => {
           setIsJoin(!isJoin);
           setIsCreate(false);
         }}>
@@ -79,15 +79,15 @@ const Room = ({ onLogout, username }) => {
       {isJoin && (
         <form onSubmit={handleSubmitJoin}>
           <div>
-            <label>Room Id:</label>
-            <input
+            <label style={{fontSize: '25px'}}>Room Id:</label>
+            <input style={{fontSize: '25px'}}
               type="text"
               value={roomId}
               onChange={(e) => setRoomId(e.target.value)}
               required
             />
           </div>
-          <button type="submit">Join</button>
+          <button style={{fontSize: '25px'}} type="submit">Join</button>
         </form>
       )}
       {isCreate && (
