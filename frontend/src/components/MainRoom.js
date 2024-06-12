@@ -26,15 +26,15 @@ const MainRoom = ({ username }) => {
         console.log('room id is: ', roomId);
         console.log("username: ", username);
         axios.get(`/rooms/get/${roomId}`)
-            .then(response => {
-                const room = response.data;
-                setActivities(room.activities ?? []);
-                setMembers(room.users ?? []);
-            })
-            .catch(error => {
-                console.error('There was an error fetching the movies!', error);
-            });
-    }, []);
+          .then(response => {
+            const room = response.data;
+            setActivities(room.activities ?? []);
+            setMembers(room.members ?? []);
+          })
+          .catch(error => {
+            console.error('There was an error fetching the movies!', error);
+          });
+      }, []);
 
     const handleCreateActivity = () => {
         setCreatingActivity(true);
@@ -132,14 +132,53 @@ const MainRoom = ({ username }) => {
         setCurrentActivity(null);
     };
 
-    const randomalgorithm = () => {
-        function shuffleArray(array) {
-            for (let i = array.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [array[i], array[j]] = [array[j], array[i]];
-            }
-            return array;
+    function shuffleArray(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
         }
+        return array;
+    }
+
+    const randomalgorithm = async () => {
+
+        const responsibilities = currentActivity.responsibilities;
+        responsibilities.sort((a, b) => a.complexity - b.complexity);
+    
+        let scores = members.map(member => ({ name: member, score: 0, responsibilities: [] }));
+    
+        shuffleArray(scores);
+    
+        for (let i = 0; i < responsibilities.length; i++) {
+
+            let memberIndex = i % scores.length;
+            scores[memberIndex].score += responsibilities[i].complexity;
+            scores[memberIndex].responsibilities.push(responsibilities[i].title);
+            responsibilities[i].username = members[memberIndex];
+    
+            if ((i + 1) % scores.length === 0) {
+                scores.sort((a, b) => a.score - b.score);
+            }
+        }
+        console.log(responsibilities);
+        setActivities(
+            activities.map(activity =>
+                activity.key === currentActivity.key
+                    ? { ...activity, responsibilities: responsibilities}
+                    : activity
+            )
+        )
+        const sometActivity = { ...currentActivity, responsibilities: responsibilities};
+        console.log(sometActivity);
+        try {
+            await axios.put(`rooms/change/activity/${roomId}?key=${currentActivity.key}`, sometActivity);
+            console.log("was changed successfully");
+        } catch(error){
+            console.log("something went wrong when changing activity", error);
+        }
+
+        console.log(scores);
+        return scores;
     }
 
     return (
@@ -227,16 +266,17 @@ const MainRoom = ({ username }) => {
                                 </select>
                                 <button style={{ backgroundColor: 'black' }} onClick={handleAddResponsibility}>Add Responsibility</button>
                                 {newResponsibilities.length > 0 && (
-                                    <div className='responsibility  '>
-                                        <ul>
-                                            {newResponsibilities.map((resp, index) => (
-                                                <li key={index}>
-                                                    {resp.responsibility} - Complexity: {resp.complexity}
-                                                    <button onClick={() => handleDeleteResponsibility(index)}>Delete</button>
-                                                </li>
-                                            ))}
-                                        </ul>
-                                    </div>
+
+                                <div className='responsibility  '>
+                                    <ul>
+                                        {newResponsibilities.map((resp, index) => (
+                                            <li key={index}>
+                                                {resp.responsibility} - Complexity: {resp.complexity} - Assigned to: {resp.username ?? "none"}
+                                                <button onClick={() => handleDeleteResponsibility(index)}>Delete</button>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </div>
                                 )}
                                 <button style={{ fontSize: '35px' }} onClick={handleSaveActivity}>Save Activity</button>
                             </>
@@ -253,7 +293,7 @@ const MainRoom = ({ username }) => {
                         <h4 style={{ fontSize: '28px' }}>Responsibilities:</h4>
                         <ul>
                             {currentActivity.responsibilities.map((resp, index) => (
-                                <li style={{ fontSize: '20px' }} key={index}>{resp.responsibility} - Complexity: {resp.complexity}</li>
+                                <li  style={{fontSize: '20px'}} key={index}>{resp.responsibility} - Complexity: {resp.complexity} - Assigned to: {resp.username ?? "none"}</li>
                             ))}
                         </ul>
                         <button type="submit" onClick={randomalgorithm}>Distribute responsibilities</button>
@@ -263,22 +303,6 @@ const MainRoom = ({ username }) => {
                 {editingActivity && (
                     <div className="edit-activity">
                         <h3>Edit Activity</h3>
-                        {/* <label>
-                            Activity Date:
-                            <input
-                                type="date"
-                                value={activityDate}
-                                onChange={(e) => setActivityDate(e.target.value)}
-                            />
-                        </label>
-                        <label>
-                            Activity Time:
-                            <input 
-                                type="time" 
-                                value={activityTime}
-                                onChange={(e) => setActivityTime(e.target.value)}
-                            />
-                        </label> */}
                         <h4>Edit Responsibilities</h4>
                         <input
                             type="text"
@@ -297,16 +321,16 @@ const MainRoom = ({ username }) => {
                         </select>
                         <button onClick={handleAddResponsibility}>Add Responsibility</button>
                         {newResponsibilities.length > 0 && (
-                            <div className='responsibility  '>
-                                <ul>
-                                    {newResponsibilities.map((resp, index) => (
-                                        <li key={index}>
-                                            {resp.responsibility} - Complexity: {resp.complexity}
-                                            <button onClick={() => handleDeleteResponsibility(index)}>Delete</button>
-                                        </li>
-                                    ))}
-                                </ul>
-                            </div>
+                        <div className='responsibility  '>
+                            <ul>
+                                {newResponsibilities.map((resp, index) => (
+                                    <li key={index}>
+                                        {resp.responsibility} - Complexity: {resp.complexity} - Assigned to: {resp.username ?? "none"}
+                                        <button onClick={() => handleDeleteResponsibility(index)}>Delete</button>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
                         )}
                         <button style={{ fontSize: '30px' }} onClick={handleSaveEditedActivity}>Save Changes</button>
                     </div>

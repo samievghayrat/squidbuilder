@@ -315,7 +315,7 @@ button:hover {
   color: silver;
 }
 .responsibility {
-  max-height: 100px;
+  max-height: 300px;
   overflow-y: auto; /* Add vertical scrollbar when content exceeds height */
 }
 
