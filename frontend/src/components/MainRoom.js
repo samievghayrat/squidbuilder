@@ -113,9 +113,9 @@ const MainRoom = () => {
             <div className="main-content" >
                 {!activitySelected && !creatingActivity && !editingActivity && (
                     <div className="no-activity-selected">
-                        <h3>No Activity Selected</h3>
-                        <p>Select an activity or get started with a new one</p>
-                        <button className="create-activity-btn"  onClick={handleCreateActivity}>Create New Activity</button>
+                        <h3 style={{fontSize: '28px'}}>No Activity Selected</h3>
+                        <p style={{fontSize: '23px'}}>Select an activity or get started with a new one</p>
+                        <button style={{fontSize: '28px'}} className="create-activity-btn"  onClick={handleCreateActivity}>Create New Activity</button>
                     </div>
                 )}
 
@@ -149,7 +149,7 @@ const MainRoom = () => {
                         </label>
                         {selectedActivity && (
                             <>
-                                <h4 style={{fontSize: '20px', textAlign: 'center', paddingTop: '10px'  }}>Add Responsibilities</h4>
+                                <h4 style={{fontSize: '20px', textAlign: 'center', paddingTop: '10px', }}>Add Responsibilities</h4>
                                 <input
                                     type="text"
                                     value={newResponsibilityText}
@@ -165,7 +165,7 @@ const MainRoom = () => {
                                     <option value="2">2</option>
                                     <option value="3">3</option>
                                 </select>
-                                <button  onClick={handleAddResponsibility}>Add Responsibility</button>
+                                <button   style={{backgroundColor: 'black' }} onClick={handleAddResponsibility}>Add Responsibility</button>
                                 {newResponsibilities.length > 0 && (
                                 <div className='responsibility  '>
                                     <ul>
@@ -186,14 +186,14 @@ const MainRoom = () => {
 
 {activitySelected && currentActivity && !editingActivity && (
                     <div className="activity-details">
-                        <h3>{currentActivity.name}</h3>
-                        <p>Date: {currentActivity.date}</p>
-                        <p>Time: {currentActivity.time}</p>
-                        <button onClick={handleEditActivity}>Edit Activity</button>
-                        <h4>Responsibilities:</h4>
+                        <h3 style={{fontSize: '28px'}}>{currentActivity.name}</h3>
+                        <p style={{fontSize: '25px'}}>Date: {currentActivity.date}</p>
+                        <p style={{fontSize: '25px'}}>Time: {currentActivity.time}</p>
+                        <button style={{fontSize: '20px'}} onClick={handleEditActivity}>Edit Activity</button>
+                        <h4 style={{fontSize: '28px'}}>Responsibilities:</h4>
                         <ul>
                             {currentActivity.responsibilities.map((resp, index) => (
-                                <li key={index}>{resp.text} - Complexity: {resp.complexity}</li>
+                                <li  style={{fontSize: '20px'}} key={index}>{resp.text} - Complexity: {resp.complexity}</li>
                             ))}
                         </ul>
                     </div>
