@@ -153,7 +153,7 @@ const MainRoom = ({onLogout}) => {
             let memberIndex = i % scores.length;
             scores[memberIndex].score += responsibilities[i].complexity;
             scores[memberIndex].responsibilities.push(responsibilities[i].title);
-            responsibilities[i].username = members[memberIndex].name;
+            responsibilities[i].username = members[memberIndex];
 
             if ((i + 1) % scores.length === 0) {
                 scores.sort((a, b) => a.score - b.score);
