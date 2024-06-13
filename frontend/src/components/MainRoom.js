@@ -103,6 +103,7 @@ const MainRoom = ({onLogout}) => {
     };
 
     const handleActivityClick = (activity) => {
+        setShowMembers(false);
         setCurrentActivity(activity);
         setNewResponsibilities(activity.responsibilities);
         setActivitySelected(true);
