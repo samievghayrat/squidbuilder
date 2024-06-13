@@ -95,18 +95,6 @@ const Room = ({ onLogout }) => {
         }}>
           Join Room
         </button>
-        <div className='rooms'>
-          <p>Current Rooms: </p>
-        <ul>
-            {rooms.map((room, index) => (
-                <li key={index}>
-                    <button style={{ backgroundColor: 'transparent', textAlign: 'start', color: 'black' }} onClick={() => handleOnClickRoom(room)}>
-                        room {index}
-                    </button>
-                </li>
-            ))}
-          </ul>
-        </div>
       </div>
       {isJoin && (
         <form onSubmit={handleSubmitJoin}>
@@ -122,6 +110,18 @@ const Room = ({ onLogout }) => {
           <button style={{fontSize: '25px'}} type="submit">Join</button>
         </form>
       )}
+      <div className='rooms'>
+          <p style={{fontSize: '25px', color: ''}}>Current Rooms: </p>
+        <ul>
+            {rooms.map((room, index) => (
+                <li key={index}>
+                    <button style={{ backgroundColor: 'transparent', textAlign: 'center', color: 'black', borderRadius: '8px', boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)' }} onClick={() => handleOnClickRoom(room)}>
+                        room {index}
+                    </button>
+                </li>
+            ))}
+          </ul>
+        </div>
       {isCreate && (
         <div className="modal">
           <div className="modal-content">
