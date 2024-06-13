@@ -23,7 +23,9 @@ const Room = ({ onLogout }) => {
       axios.get(`/users/${storedUsername}/rooms`)
         .then(response => {
           console.log(response.data);
-          setRooms(response.data ?? []);
+          if(response.data){
+            setRooms(response.data);
+          }
         })
         .catch(error => {
           console.error('There was an error fetching the room data!', error);

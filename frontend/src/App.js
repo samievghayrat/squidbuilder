@@ -24,6 +24,7 @@ const App = () => {
     setUsername(username);
     setIsLoggedIn(true);
     localStorage.setItem('isLoggedIn', 'true');
+    localStorage.setItem('username', username);
   };
 
   const handleRegister = (username) => {
